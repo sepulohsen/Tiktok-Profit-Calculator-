@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator GMV TikTok (v3)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Calculator GMV TikTok (v3)</h2>
+<p>Tarikh Dicipta: 23/06/2025 09:31:38</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>SKU Name</th>
+            <th>COGS (RM)</th>
+            <th>Unit Sold</th>
+        </tr>
+    </thead>
+    <tbody id="sku-rows">
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
+    </tbody>
+</table>
+
+<div class="section-title">Input Lain</div>
+<p>GMV/Order Amount SKU: <input id="gmv" type="number" step="any"></p>
+<p>Subtotal Selepas Diskaun: <input id="subtotal" type="number" step="any"></p>
+<p>Cancelled/Refund (RM): <input id="refund" type="number" step="any"></p>
+<p>Shipping Fee Selepas Diskaun: <input id="shipping" type="number" step="any"></p>
+<p>Ads Cost (RM): <input id="ads" type="number" step="any"></p>
+<p>Affiliate Fee (RM): <input id="affiliate" type="number" step="any"></p>
+
+<div class="section-title">Output</div>
+<div class="result" id="output">
+    <p>Total COGS: RM <span id="total-cogs">0.00</span></p>
+    <p>Net GMV: RM <span id="net-gmv">0.00</span></p>
+    <p>Transaction Fee (3.78%): RM <span id="trans-fee">0.00</span></p>
+    <p>Commission Fee (7.56%): RM <span id="comm-fee">0.00</span></p>
+    <p>Service Fee (4.32%): RM <span id="serv-fee">0.00</span></p>
+    <p><strong>Profit/Loss:</strong> RM <span id="profit">0.00</span></p>
+</div>
+
+<button onclick="calculate()">Kira</button>
+
+<script>
+function calculate() {
+    const rows = document.querySelectorAll('#sku-rows tr');
+    let totalCogs = 0;
+    rows.forEach(row => {
+        const cogs = parseFloat(row.cells[1].querySelector('input').value) || 0;
+        const unit = parseFloat(row.cells[2].querySelector('input').value) || 0;
+        totalCogs += cogs * unit;
+    });
+
+    const gmv = parseFloat(document.getElementById('gmv').value) || 0;
+    const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
+    const refund = parseFloat(document.getElementById('refund').value) || 0;
+    const shipping = parseFloat(document.getElementById('shipping').value) || 0;
+    const ads = parseFloat(document.getElementById('ads').value) || 0;
+    const affiliate = parseFloat(document.getElementById('affiliate').value) || 0;
+
+    const netGmv = gmv - refund + shipping;
+    const transFee = gmv * 0.0378;
+    const commFee = subtotal * 0.0756;
+    const servFee = subtotal * 0.0432;
+
+    const profit = netGmv - totalCogs - ads - transFee - commFee - servFee - affiliate;
+
+    document.getElementById('total-cogs').textContent = totalCogs.toFixed(2);
+    document.getElementById('net-gmv').textContent = netGmv.toFixed(2);
+    document.getElementById('trans-fee').textContent = transFee.toFixed(2);
+    document.getElementById('comm-fee').textContent = commFee.toFixed(2);
+    document.getElementById('serv-fee').textContent = servFee.toFixed(2);
+    document.getElementById('profit').textContent = profit.toFixed(2);
+}
+</script>
+
+</body>
+</html>
