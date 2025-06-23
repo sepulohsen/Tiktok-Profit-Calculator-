@@ -6,7 +6,8 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f1f7ff;
+      background-color: #f2f7fe;
+      margin: 0;
       padding: 20px;
     }
 
@@ -14,245 +15,169 @@
       color: #007bff;
     }
 
-    .sku-container,
-    .inputs,
-    .results {
-      background-color: #fff;
-      border: 1px solid #d6e9ff;
-      border-radius: 6px;
-      padding: 20px;
+    .section {
       margin-bottom: 20px;
     }
 
-    .sku-row {
-      display: flex;
-      gap: 10px;
+    label {
+      display: inline-block;
+      width: 220px;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 80px;
+      padding: 3px;
+      margin-bottom: 8px;
+    }
+
+    #skuContainer {
       margin-bottom: 10px;
-      align-items: flex-start;
     }
 
-    .sku-row label {
-      display: block;
-      font-weight: bold;
-      font-size: 13px;
-      margin-bottom: 2px;
+    .skuRow {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+      gap: 10px;
     }
 
-    .sku-row input {
-      height: 28px;
-      padding: 2px 6px;
-      border-radius: 3px;
-      border: 1px solid #ccc;
-      font-size: 13px;
-    }
-
-    .sku-name {
+    .skuRow input[type="text"] {
       width: 200px;
     }
 
-    .sku-cogs,
-    .sku-sold {
-      width: 70px;
+    .skuRow input[type="number"] {
+      width: 80px;
+    }
+
+    #outputSection input[type="text"] {
+      background-color: #fff;
     }
 
     button {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
       padding: 6px 12px;
-      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      border: none;
       cursor: pointer;
-      font-size: 13px;
-      margin-top: 5px;
     }
 
     button:hover {
       background-color: #0056b3;
     }
 
-    .input-row {
+    .calc-row {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .input-row label {
-      flex: 1;
-      font-size: 13px;
-    }
-
-    .input-row input {
-      width: 80px;
-      height: 24px;
-      padding: 2px 6px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
-    }
-
-    .results {
-      background-color: #dff0ff;
-    }
-
-    .results-row {
-      display: flex;
-      justify-content: space-between;
       align-items: center;
       margin-bottom: 6px;
     }
 
-    .results-row label {
-      flex: 1;
-      font-weight: bold;
-      font-size: 13px;
+    .calc-row label {
+      width: 200px;
+      margin-right: 10px;
     }
 
-    .results-row input {
+    .calc-row input {
       width: 80px;
-      height: 24px;
-      padding: 2px 6px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-radius: 3px;
     }
+
   </style>
 </head>
 <body>
+
   <h2>Calculator GMV TikTok (v3)</h2>
 
-  <div class="sku-container" id="skuContainer">
-    <div class="sku-row">
+  <div class="section" id="skuContainer">
+    <div class="skuRow">
       <div>
-        <label>SKU Name</label>
-        <input type="text" class="sku-name" placeholder="SKU Name">
+        <label>SKU Name</label><br>
+        <input type="text" placeholder="SKU Name" class="skuName">
       </div>
       <div>
-        <label>COGS (RM)</label>
-        <input type="number" class="sku-cogs" placeholder="COGS">
+        <label>COGS (RM)</label><br>
+        <input type="number" placeholder="COGS" class="skuCost">
       </div>
       <div>
-        <label>Unit Sold</label>
-        <input type="number" class="sku-sold" placeholder="Sold">
+        <label>Unit Sold</label><br>
+        <input type="number" placeholder="Sold" class="skuQty">
       </div>
     </div>
   </div>
-  <button onclick="addSkuRow()">+ Tambah SKU</button>
+  <button onclick="addSKU()">+ Tambah SKU</button>
 
-  <div class="inputs">
-    <div class="input-row">
-      <label>GMV/Order Amount SKU:</label>
-      <input type="number" id="gmv">
-    </div>
-    <div class="input-row">
-      <label>Subtotal Selepas Diskaun:</label>
-      <input type="number" id="subtotal">
-    </div>
-    <div class="input-row">
-      <label>Cancelled (RM):</label>
-      <input type="number" id="cancelled">
-    </div>
-    <div class="input-row">
-      <label>Order Refund Amount (RM):</label>
-      <input type="number" id="refund">
-    </div>
-    <div class="input-row">
-      <label>Shipping Fee Selepas Diskaun:</label>
-      <input type="number" id="shipping">
-    </div>
-    <div class="input-row">
-      <label>Ads Cost (RM):</label>
-      <input type="number" id="ads">
-    </div>
-    <div class="input-row">
-      <label>Affiliate Fee (RM):</label>
-      <input type="number" id="affiliate">
-    </div>
+  <div class="section" id="inputSection">
+    <div class="calc-row"><label>GMV/Order Amount SKU:</label><input type="number" id="gmvAmount"></div>
+    <div class="calc-row"><label>Subtotal Selepas Diskaun:</label><input type="number" id="subtotalDisc"></div>
+    <div class="calc-row"><label>Canceled (RM):</label><input type="number" id="cancelledAmount"></div>
+    <div class="calc-row"><label>Order Refund Amount (RM):</label><input type="number" id="refundAmount"></div>
+    <div class="calc-row"><label>Shipping Fee Selepas Diskaun:</label><input type="number" id="shippingDisc"></div>
+    <div class="calc-row"><label>Ads Cost (RM):</label><input type="number" id="adsCost"></div>
+    <div class="calc-row"><label>Affiliate Fee (RM):</label><input type="number" id="affiliateFee"></div>
   </div>
 
   <button onclick="calculate()">Kira</button>
 
-  <div class="results">
-    <div class="results-row">
-      <label>Total COGS:</label>
-      <input type="text" id="totalCogs" readonly>
-    </div>
-    <div class="results-row">
-      <label>Net GMV:</label>
-      <input type="text" id="netGmv" readonly>
-    </div>
-    <div class="results-row">
-      <label>Transaction Fee (3.78%):</label>
-      <input type="text" id="transactionFee" readonly>
-    </div>
-    <div class="results-row">
-      <label>Commission Fee (7.56%):</label>
-      <input type="text" id="commissionFee" readonly>
-    </div>
-    <div class="results-row">
-      <label>Service Fee (4.32%):</label>
-      <input type="text" id="serviceFee" readonly>
-    </div>
-    <div class="results-row">
-      <label><strong>Profit/Loss:</strong></label>
-      <input type="text" id="profitLoss" readonly>
-    </div>
+  <div class="section" id="outputSection">
+    <div class="calc-row"><label>Total COGS:</label><input type="text" id="totalCogs" readonly></div>
+    <div class="calc-row"><label>Net GMV:</label><input type="text" id="netGmv" readonly></div>
+    <div class="calc-row"><label>Transaction Fee (3.78%):</label><input type="text" id="transFee" readonly></div>
+    <div class="calc-row"><label>Commission Fee (7.56%):</label><input type="text" id="commFee" readonly></div>
+    <div class="calc-row"><label>Service Fee (4.32%):</label><input type="text" id="servFee" readonly></div>
+    <div class="calc-row"><label><strong>Profit/Loss:</strong></label><input type="text" id="profitLoss" readonly></div>
   </div>
 
   <script>
-    function addSkuRow() {
-      const container = document.getElementById("skuContainer");
-      const row = document.createElement("div");
-      row.className = "sku-row";
+    function addSKU() {
+      const container = document.getElementById('skuContainer');
+      const row = document.createElement('div');
+      row.className = 'skuRow';
       row.innerHTML = `
         <div>
-          <label>SKU Name</label>
-          <input type="text" class="sku-name" placeholder="SKU Name">
+          <input type="text" placeholder="SKU Name" class="skuName" style="width: 200px;">
         </div>
         <div>
-          <label>COGS (RM)</label>
-          <input type="number" class="sku-cogs" placeholder="COGS">
+          <input type="number" placeholder="COGS" class="skuCost" style="width: 80px;">
         </div>
         <div>
-          <label>Unit Sold</label>
-          <input type="number" class="sku-sold" placeholder="Sold">
+          <input type="number" placeholder="Sold" class="skuQty" style="width: 80px;">
         </div>
       `;
       container.appendChild(row);
     }
 
     function calculate() {
-      let cogs = document.querySelectorAll('.sku-cogs');
-      let sold = document.querySelectorAll('.sku-sold');
-
       let totalCogs = 0;
-      for (let i = 0; i < cogs.length; i++) {
-        let c = parseFloat(cogs[i].value) || 0;
-        let s = parseFloat(sold[i].value) || 0;
-        totalCogs += c * s;
+      const names = document.querySelectorAll('.skuName');
+      const costs = document.querySelectorAll('.skuCost');
+      const qtys = document.querySelectorAll('.skuQty');
+
+      for (let i = 0; i < costs.length; i++) {
+        const cost = parseFloat(costs[i].value) || 0;
+        const qty = parseFloat(qtys[i].value) || 0;
+        totalCogs += cost * qty;
       }
 
-      let gmv = parseFloat(document.getElementById("gmv").value) || 0;
-      let subtotal = parseFloat(document.getElementById("subtotal").value) || 0;
-      let cancelled = parseFloat(document.getElementById("cancelled").value) || 0;
-      let refund = parseFloat(document.getElementById("refund").value) || 0;
-      let shipping = parseFloat(document.getElementById("shipping").value) || 0;
-      let ads = parseFloat(document.getElementById("ads").value) || 0;
-      let affiliate = parseFloat(document.getElementById("affiliate").value) || 0;
+      const gmv = parseFloat(document.getElementById('gmvAmount').value) || 0;
+      const subtotal = parseFloat(document.getElementById('subtotalDisc').value) || 0;
+      const cancelled = parseFloat(document.getElementById('cancelledAmount').value) || 0;
+      const refund = parseFloat(document.getElementById('refundAmount').value) || 0;
+      const shipping = parseFloat(document.getElementById('shippingDisc').value) || 0;
+      const ads = parseFloat(document.getElementById('adsCost').value) || 0;
+      const affiliate = parseFloat(document.getElementById('affiliateFee').value) || 0;
 
-      let netGmv = gmv - (cancelled + refund);
-      let transactionFee = 0.0378 * gmv;
-      let commissionFee = 0.0756 * subtotal;
-      let serviceFee = 0.0432 * subtotal;
+      const netGmv = gmv - cancelled - refund;
+      const transactionFee = 0.0378 * gmv;
+      const commissionFee = 0.0756 * subtotal - refund;
+      const serviceFee = 0.0432 * subtotal - refund;
 
-      let profit = netGmv - (totalCogs + transactionFee + commissionFee + serviceFee + ads + affiliate);
+      const profit = netGmv - totalCogs - transactionFee - commissionFee - serviceFee - ads - affiliate;
 
-      document.getElementById("totalCogs").value = "RM " + totalCogs.toFixed(2);
-      document.getElementById("netGmv").value = "RM " + netGmv.toFixed(2);
-      document.getElementById("transactionFee").value = "RM " + transactionFee.toFixed(2);
-      document.getElementById("commissionFee").value = "RM " + commissionFee.toFixed(2);
-      document.getElementById("serviceFee").value = "RM " + serviceFee.toFixed(2);
-      document.getElementById("profitLoss").value = "RM " + profit.toFixed(2);
+      document.getElementById('totalCogs').value = "RM " + totalCogs.toFixed(2);
+      document.getElementById('netGmv').value = "RM " + netGmv.toFixed(2);
+      document.getElementById('transFee').value = "RM " + transactionFee.toFixed(2);
+      document.getElementById('commFee').value = "RM " + commissionFee.toFixed(2);
+      document.getElementById('servFee').value = "RM " + serviceFee.toFixed(2);
+      document.getElementById('profitLoss').value = "RM " + profit.toFixed(2);
     }
   </script>
 </body>
