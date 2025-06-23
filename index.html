@@ -1,115 +1,174 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Calculator GMV TikTok (v3)</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        table {
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        input {
-            width: 100%;
-        }
-        .section-title {
-            font-weight: bold;
-            margin-top: 20px;
-            font-size: 18px;
-        }
-        .result {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Calculator GMV TikTok (v3)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f9ff;
+      padding: 20px;
+      color: #003366;
+    }
+
+    h2 {
+      color: #003366;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+    }
+
+    th, td {
+      padding: 8px;
+      border: 1px solid #99c2ff;
+      text-align: left;
+    }
+
+    th {
+      background-color: #cce0ff;
+    }
+
+    input[type="text"], input[type="number"] {
+      width: 90%;
+      padding: 5px;
+      border: 1px solid #99c2ff;
+      border-radius: 4px;
+    }
+
+    .section {
+      margin-top: 30px;
+    }
+
+    .result-box {
+      background-color: #e6f2ff;
+      padding: 10px;
+      border: 1px solid #b3d1ff;
+      margin-top: 10px;
+    }
+
+    .button {
+      margin-top: 10px;
+      padding: 8px 16px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #004d99;
+    }
+
+    .small-input {
+      width: 200px;
+    }
+
+    .sku-row {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .sku-row input {
+      flex: 1;
+    }
+
+    #sku-list {
+      margin-bottom: 15px;
+    }
+
+    .subsection {
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+  </style>
 </head>
 <body>
+  <h2>Calculator GMV TikTok (v3)</h2>
 
-<h2>Calculator GMV TikTok (v3)</h2>
-<p>Tarikh Dicipta: 23/06/2025 09:31:38</p>
+  <div id="sku-list">
+    <div class="subsection">SKU Input:</div>
+    <div class="sku-row">
+      <input type="text" placeholder="SKU Name">
+      <input type="number" placeholder="COGS (RM)">
+      <input type="number" placeholder="Unit Sold">
+    </div>
+  </div>
+  <button class="button" onclick="addSKU()">+ Tambah SKU</button>
 
-<table>
-    <thead>
-        <tr>
-            <th>SKU Name</th>
-            <th>COGS (RM)</th>
-            <th>Unit Sold</th>
-        </tr>
-    </thead>
-    <tbody id="sku-rows">
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-        <tr><td><input></td><td><input type="number" step="any"></td><td><input type="number"></td></tr>
-    </tbody>
-</table>
+  <div class="section">
+    <div class="subsection">Input Lain</div>
+    <input type="number" class="small-input" id="gmv" placeholder="GMV/Order Amount SKU (RM)">
+    <input type="number" class="small-input" id="subtotal" placeholder="Subtotal Selepas Diskaun (RM)">
+    <input type="number" class="small-input" id="refund" placeholder="Cancelled/Refund (RM)">
+    <input type="number" class="small-input" id="shipping" placeholder="Shipping Fee Selepas Diskaun (RM)">
+    <input type="number" class="small-input" id="ads" placeholder="Ads Cost (RM)">
+    <input type="number" class="small-input" id="affiliate" placeholder="Affiliate Fee (RM)">
+  </div>
 
-<div class="section-title">Input Lain</div>
-<p>GMV/Order Amount SKU: <input id="gmv" type="number" step="any"></p>
-<p>Subtotal Selepas Diskaun: <input id="subtotal" type="number" step="any"></p>
-<p>Cancelled/Refund (RM): <input id="refund" type="number" step="any"></p>
-<p>Shipping Fee Selepas Diskaun: <input id="shipping" type="number" step="any"></p>
-<p>Ads Cost (RM): <input id="ads" type="number" step="any"></p>
-<p>Affiliate Fee (RM): <input id="affiliate" type="number" step="any"></p>
+  <button class="button" onclick="kira()">Kira</button>
 
-<div class="section-title">Output</div>
-<div class="result" id="output">
-    <p>Total COGS: RM <span id="total-cogs">0.00</span></p>
-    <p>Net GMV: RM <span id="net-gmv">0.00</span></p>
-    <p>Transaction Fee (3.78%): RM <span id="trans-fee">0.00</span></p>
-    <p>Commission Fee (7.56%): RM <span id="comm-fee">0.00</span></p>
-    <p>Service Fee (4.32%): RM <span id="serv-fee">0.00</span></p>
-    <p><strong>Profit/Loss:</strong> RM <span id="profit">0.00</span></p>
-</div>
+  <div class="section result-box" id="result">
+    <div><strong>Total COGS:</strong> RM 0.00</div>
+    <div><strong>Net GMV:</strong> RM 0.00</div>
+    <div><strong>Transaction Fee (3.78%):</strong> RM 0.00</div>
+    <div><strong>Commission Fee (7.56%):</strong> RM 0.00</div>
+    <div><strong>Service Fee (4.32%):</strong> RM 0.00</div>
+    <div><strong>Profit/Loss:</strong> RM 0.00</div>
+  </div>
 
-<button onclick="calculate()">Kira</button>
+  <script>
+    function addSKU() {
+      const container = document.getElementById("sku-list");
+      const row = document.createElement("div");
+      row.className = "sku-row";
+      row.innerHTML = `
+        <input type="text" placeholder="SKU Name">
+        <input type="number" placeholder="COGS (RM)">
+        <input type="number" placeholder="Unit Sold">
+      `;
+      container.appendChild(row);
+    }
 
-<script>
-function calculate() {
-    const rows = document.querySelectorAll('#sku-rows tr');
-    let totalCogs = 0;
-    rows.forEach(row => {
-        const cogs = parseFloat(row.cells[1].querySelector('input').value) || 0;
-        const unit = parseFloat(row.cells[2].querySelector('input').value) || 0;
-        totalCogs += cogs * unit;
-    });
+    function kira() {
+      const rows = document.querySelectorAll("#sku-list .sku-row");
+      let totalCOGS = 0;
 
-    const gmv = parseFloat(document.getElementById('gmv').value) || 0;
-    const subtotal = parseFloat(document.getElementById('subtotal').value) || 0;
-    const refund = parseFloat(document.getElementById('refund').value) || 0;
-    const shipping = parseFloat(document.getElementById('shipping').value) || 0;
-    const ads = parseFloat(document.getElementById('ads').value) || 0;
-    const affiliate = parseFloat(document.getElementById('affiliate').value) || 0;
+      rows.forEach(row => {
+        const inputs = row.querySelectorAll("input");
+        const cogs = parseFloat(inputs[1].value) || 0;
+        const sold = parseFloat(inputs[2].value) || 0;
+        totalCOGS += cogs * sold;
+      });
 
-    const netGmv = gmv - refund + shipping;
-    const transFee = gmv * 0.0378;
-    const commFee = subtotal * 0.0756;
-    const servFee = subtotal * 0.0432;
+      const gmv = parseFloat(document.getElementById("gmv").value) || 0;
+      const subtotal = parseFloat(document.getElementById("subtotal").value) || 0;
+      const refund = parseFloat(document.getElementById("refund").value) || 0;
+      const shipping = parseFloat(document.getElementById("shipping").value) || 0;
+      const ads = parseFloat(document.getElementById("ads").value) || 0;
+      const affiliate = parseFloat(document.getElementById("affiliate").value) || 0;
 
-    const profit = netGmv - totalCogs - ads - transFee - commFee - servFee - affiliate;
+      const netGMV = gmv + subtotal + refund;
 
-    document.getElementById('total-cogs').textContent = totalCogs.toFixed(2);
-    document.getElementById('net-gmv').textContent = netGmv.toFixed(2);
-    document.getElementById('trans-fee').textContent = transFee.toFixed(2);
-    document.getElementById('comm-fee').textContent = commFee.toFixed(2);
-    document.getElementById('serv-fee').textContent = servFee.toFixed(2);
-    document.getElementById('profit').textContent = profit.toFixed(2);
-}
-</script>
+      const feeTxn = netGMV * 0.0378;
+      const feeComm = subtotal * 0.0756;
+      const feeServ = subtotal * 0.0432;
 
+      const profit = netGMV - totalCOGS - feeTxn - feeComm - feeServ - ads - affiliate;
+
+      document.getElementById("result").innerHTML = `
+        <div><strong>Total COGS:</strong> RM ${totalCOGS.toFixed(2)}</div>
+        <div><strong>Net GMV:</strong> RM ${netGMV.toFixed(2)}</div>
+        <div><strong>Transaction Fee (3.78%):</strong> RM ${feeTxn.toFixed(2)}</div>
+        <div><strong>Commission Fee (7.56%):</strong> RM ${feeComm.toFixed(2)}</div>
+        <div><strong>Service Fee (4.32%):</strong> RM ${feeServ.toFixed(2)}</div>
+        <div><strong>Profit/Loss:</strong> RM ${profit.toFixed(2)}</div>
+      `;
+    }
+  </script>
 </body>
 </html>
